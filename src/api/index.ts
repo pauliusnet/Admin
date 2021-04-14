@@ -2,7 +2,7 @@ import { Api } from './generated-api';
 import store from '../state/store';
 import { setAccessToken } from '../state/auth/auth.actions';
 
-const api = new Api({ baseUrl: 'http://localhost:3000', baseApiParams: { credentials: 'include' } });
+const api = new Api({ baseUrl: process.env.REACT_APP_BASE_URL, baseApiParams: { credentials: 'include' } });
 
 const originalRequest = api.request;
 

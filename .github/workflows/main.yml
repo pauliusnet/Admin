@@ -1,0 +1,25 @@
+name: Main pipeline
+
+on: [push]
+
+jobs:
+    deploy:
+        name: Upload to Amazon S3
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/master'
+        timeout-minutes: 30
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Configure AWS credentials from Test account
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: us-east-1
+
+            - run: npm install
+            - run: npm run build
+            - run: aws s3 sync ./build s3://admin-app

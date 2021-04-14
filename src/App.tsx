@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 // @ts-ignore
 import { FacebookProvider, LoginButton } from 'react-facebook';
 import api from './api';
@@ -12,7 +12,7 @@ const App: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const accessToken = useSelector(accessTokenSelector);
 
-    const handleFacebookLogin = async (response: any) => {
+    const handleFacebookLogin = async (response: { tokenDetail: { accessToken: string } }) => {
         const { data } = await api.users.authenticate({ facebookAccessToken: response.tokenDetail.accessToken });
         dispatch(setAccessToken(data.accessToken));
     };
