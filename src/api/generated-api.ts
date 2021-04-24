@@ -27,6 +27,8 @@ export interface TrickDto {
   level: number;
 }
 
+export type UpdateTrickDto = CreateTrickDto;
+
 export interface UserAuthenticationResponseDto {
   accessToken: string;
 }
@@ -270,6 +272,39 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<TrickDto[], any>({
         path: `/tricks`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name DeleteTrickById
+     * @request DELETE:/tricks/{id}
+     * @secure
+     */
+    deleteTrickById: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/tricks/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UpdateTrickById
+     * @request PATCH:/tricks/{id}
+     * @secure
+     */
+    updateTrickById: (id: number, data: UpdateTrickDto, params: RequestParams = {}) =>
+      this.request<TrickDto, any>({
+        path: `/tricks/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
