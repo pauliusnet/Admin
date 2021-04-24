@@ -63,7 +63,6 @@ const UpdateTrickDialog: React.FunctionComponent<UpdateTrickDialogProps> = ({ tr
                         />
 
                         <TextField
-                            autoFocus
                             margin='dense'
                             label='Enter trick difficulty level'
                             fullWidth
@@ -75,7 +74,6 @@ const UpdateTrickDialog: React.FunctionComponent<UpdateTrickDialogProps> = ({ tr
                         />
 
                         <TextField
-                            autoFocus
                             margin='dense'
                             label='Enter trick video URL'
                             fullWidth

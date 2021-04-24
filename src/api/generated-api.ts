@@ -39,6 +39,18 @@ export interface UserAuthenticationRequestDto {
 
 export type RefreshTokenResponseDto = UserAuthenticationResponseDto;
 
+export enum UserRole {
+  ADMIN = "ADMIN",
+  CUSTOMER = "CUSTOMER",
+  REFEREE = "REFEREE",
+  INSTRUCTOR = "INSTRUCTOR",
+}
+
+export interface ChangeUserRoleRequestDto {
+  email: string;
+  role: UserRole;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -337,6 +349,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/users/refresh-token`,
         method: "POST",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name ChangeRole
+     * @request PATCH:/users/change-role
+     * @secure
+     */
+    changeRole: (data: ChangeUserRoleRequestDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/change-role`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
   };

@@ -32,7 +32,7 @@ const Tricks: React.FunctionComponent = () => {
         <div className={classes.root}>
             <h1 className={classes.header}>Tricks</h1>
             <TableContainer component={Paper}>
-                <Table aria-label='simple table'>
+                <Table aria-label='simple table' size='small'>
                     <TableHead style={{ backgroundColor: 'lightgrey' }}>
                         <TableRow>
                             <TableCell>ID</TableCell>
@@ -57,6 +57,7 @@ const Tricks: React.FunctionComponent = () => {
                                         onClick={() => setToBeUpdatedTrick(trick)}
                                         variant='contained'
                                         color='primary'
+                                        size='small'
                                     >
                                         Update
                                     </Button>
@@ -66,6 +67,7 @@ const Tricks: React.FunctionComponent = () => {
                                         onClick={() => setToBeDeletedTrickId(trick.id)}
                                         variant='contained'
                                         color='secondary'
+                                        size='small'
                                     >
                                         Delete
                                     </Button>
@@ -77,7 +79,12 @@ const Tricks: React.FunctionComponent = () => {
             </TableContainer>
 
             <div className={classes.button}>
-                <Button onClick={() => setIsCreateTrickDialogOpen(true)} variant='contained' color='primary'>
+                <Button
+                    onClick={() => setIsCreateTrickDialogOpen(true)}
+                    variant='contained'
+                    color='primary'
+                    size='medium'
+                >
                     Create new trick
                 </Button>
             </div>

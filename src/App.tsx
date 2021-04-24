@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { FacebookProvider, LoginButton } from 'react-facebook';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import api from './api';
 import './App.css';
 import Tricks from './components/Tricks/Tricks';
@@ -9,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAccessToken } from './state/auth/auth.actions';
 import { accessTokenSelector } from './state/auth/auth.selectors';
 import './App.css';
+import NavigationTab from './components/NavigationTab/NavigationTab';
+import { NavigationRoute } from './components/NavigationTab/NavigationTab.types';
+import Users from './components/Users/Users';
 
 const App: React.FunctionComponent = () => {
     const dispatch = useDispatch();
@@ -39,7 +43,19 @@ const App: React.FunctionComponent = () => {
     return (
         <div className='App'>
             {isAdminViewEnabled ? (
-                <Tricks />
+                <Router>
+                    <div>
+                        <NavigationTab />
+                        <Switch>
+                            <Route path={NavigationRoute.Tricks}>
+                                <Tricks />
+                            </Route>
+                            <Route path={NavigationRoute.Users}>
+                                <Users />
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
             ) : (
                 <div className='center login-box'>
                     <h1>Wake</h1>
