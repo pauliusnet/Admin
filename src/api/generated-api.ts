@@ -46,6 +46,15 @@ export enum UserRole {
   INSTRUCTOR = "INSTRUCTOR",
 }
 
+export interface GetUserDto {
+  /** @format double */
+  id: number;
+  pictureURL: string;
+  email: string;
+  name: string;
+  role: UserRole;
+}
+
 export interface ChangeUserRoleRequestDto {
   email: string;
   role: UserRole;
@@ -355,6 +364,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @name GetAllUsers
+     * @request GET:/users
+     * @secure
+     */
+    getAllUsers: (params: RequestParams = {}) =>
+      this.request<GetUserDto[], any>({
+        path: `/users`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @name ChangeRole
      * @request PATCH:/users/change-role
      * @secure
@@ -362,6 +387,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     changeRole: (data: ChangeUserRoleRequestDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/users/change-role`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name ChangeRoleWithStaticToken
+     * @request PATCH:/users/change-role-with-static-token
+     * @secure
+     */
+    changeRoleWithStaticToken: (data: ChangeUserRoleRequestDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/change-role-with-static-token`,
         method: "PATCH",
         body: data,
         secure: true,

@@ -1,7 +1,6 @@
 import { Paper, Tab, Tabs } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { hasKey } from '../utils';
 import { NavigationRoute } from '../routes';
 
 const NavigationTab: React.FunctionComponent = () => {
@@ -12,6 +11,13 @@ const NavigationTab: React.FunctionComponent = () => {
     const handleChange = (event: React.ChangeEvent<Record<string, unknown>>, newValue: string) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        if (!Object.values(NavigationRoute).includes(location.pathname as NavigationRoute)) {
+            history.push(NavigationRoute.Tricks);
+            setValue(NavigationRoute.Tricks);
+        }
+    }, []);
 
     return (
         <Paper square>

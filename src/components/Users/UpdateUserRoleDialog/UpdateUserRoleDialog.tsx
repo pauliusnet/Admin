@@ -17,14 +17,14 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import api, { UserRole } from '../../../api';
 import { accessTokenSelector } from '../../../state/auth/auth.selectors';
-import { setTricks } from '../../../state/tricks/tricks.actions';
-import { CreateTrickDialogProps } from '../../Tricks/CreateTrickDialog/CreateTrickDialog.types';
+import { setUsers } from '../../../state/users/users.actions';
 import useStyles from './UpdateUserRoleDialog.styles';
 import { UpdateUserRoleDialogFormInputs, UpdateUserRoleDialogProps } from './UpdateUserRoleDialog.types.';
 
-const UpdateUserRoleDialog: React.FunctionComponent<CreateTrickDialogProps> = ({ onClose }) => {
+const UpdateUserRoleDialog: React.FunctionComponent<UpdateUserRoleDialogProps> = ({ userData, onClose }) => {
     const classes = useStyles();
     const accessToken = useSelector(accessTokenSelector);
+    const dispatch = useDispatch();
     const {
         register,
         handleSubmit,
@@ -37,12 +37,16 @@ const UpdateUserRoleDialog: React.FunctionComponent<CreateTrickDialogProps> = ({
         api.users
             .changeRole(
                 {
-                    email: data.email,
+                    email: userData.email,
                     role: data.role,
                 },
                 { headers: { Authorization: `Bearer ${accessToken}` } },
             )
-            .then(() => onClose())
+            .then(async () => {
+                const { data } = await api.users.getAllUsers({ headers: { Authorization: `Bearer ${accessToken}` } });
+                dispatch(setUsers(data));
+                onClose();
+            })
             .finally(() => setIsLoading(false));
     };
 
@@ -51,22 +55,15 @@ const UpdateUserRoleDialog: React.FunctionComponent<CreateTrickDialogProps> = ({
             <DialogTitle id='simple-dialog-title'>Update User role</DialogTitle>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin='dense'
-                        label='Enter users email'
-                        fullWidth
-                        error={!!errors.email}
-                        helperText={!!errors.email ? 'User email must be provided.' : null}
-                        {...register('email', { required: true })}
-                    />
+                    <TextField value={userData.email} margin='dense' label='Users email' fullWidth disabled />
 
                     <FormControl className={classes.formControl}>
                         <InputLabel id='demo-simple-select-label'>Select user role</InputLabel>
                         <Select
+                            autoFocus
                             labelId='demo-simple-select-label'
+                            defaultValue={userData.role}
                             id='demo-simple-select'
-                            error={!!errors.role}
                             {...register('role', { required: true })}
                         >
                             <MenuItem value={UserRole.ADMIN}>Admin</MenuItem>
