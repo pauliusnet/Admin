@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAccessToken } from './state/auth/auth.actions';
 import { accessTokenSelector } from './state/auth/auth.selectors';
 import './App.css';
-import NavigationTab from './components/NavigationTab/NavigationTab';
-import { NavigationRoute } from './components/NavigationTab/NavigationTab.types';
+import NavigationTab from './components/NavigationTab';
+import { NavigationRoute } from './routes';
 import Users from './components/Users/Users';
 
 const App: React.FunctionComponent = () => {
